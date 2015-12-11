@@ -1,0 +1,66 @@
+---
+output: pdf_document
+---
+**Regression Models Project (Two Page Condensed Version)- Jeff Sheremata**  
+**Executive Summary**
+Motor Trend, is interested in the following two questions: 1.  Is an automatic or manual transmission better for MPG?  2.  What is the MPG difference between automatic and manual transmissions?  The approach taken was to use the mtcars dataset, and create a linear regression model with MPG as the predicted variable, with transmission and other variables as predictors.  A linear regression model (R^2 =0.866) determined that when the other model variables (hp, cyl, and wt) were constant, manual trasmissions improved MPG by an average of 1.8 MPH compared to automatic transmissions.   
+**Step 1 mtcars data is loaded and some variables are transformed into factors**
+```{r} 
+data(mtcars)
+mtcars$am   <- factor(mtcars$am,labels=c("Automatic","Manual")); 
+mtcars$carb <- factor(mtcars$carb); mtcars$cyl<- factor(mtcars$cyl); 
+mtcars$gear <-factor(mtcars$gear); mtcars$vs<- factor(mtcars$vs)
+```
+**Step 2  Exploratory Data Analysis**
+A pairs plot of all of the variables in this study is presented in the Appendix in Figure 1.  By visual interpretation, most of the variables apear to impact MPG.  
+**Step 3  Statistical Inference**
+```{r,collapse=TRUE} 
+options(digits=4); ttest<-t.test(mpg ~ am, data = mtcars)
+```
+In mtcars, the mean MPGs of the cars with manual and automatic transmissions are  `r ttest$estimate[1]` and `r ttest$estimate[2]` MPG.  A boxplot of the automatic vs. manual transmission MPG data is presented in Figure 2 of the Appendix.  The p-value of the t-test is `r ttest$p.value`.  We reject the null hypothesis and conclude that the automatic and manual cars are from different populations.  
+**Step 4  Regression Model Development**
+The step function is used to compose a linear predictive model of MPG variables.  Step uses both forward and backward selection to identify the variables that most signifficantly impact the ouput variable (in our case MPG).  Step requires an initial model.  For an initial model, I supplied a linear model (initialmodel) that had all of the variables as inputs.  For statistical comparison  basemodel is defined as the model that uses only transmission type (am) as a predictor. 
+```{r,results="hide"}
+initialmodel <- lm(mpg ~ ., data = mtcars)
+basemodel <- lm(mpg ~ am, data = mtcars)
+stepmodel <- step(initialmodel, direction = "both")
+supermodel1 <- lm(mpg ~ cyl + hp+wt*am, data = mtcars)
+supermodel2 <- lm(mpg ~ cyl + hp*wt+am, data = mtcars)
+```
+The only predictor variable in the basemodel is am.  The basemodel DF of freedom is `r basemodel$df`.  The adjusted R^2 is `r summary(basemodel)$r.squared` the residual standard error is `r summary(basemodel)$sigma`. The R^2 value indicates that only aproximately 36% of the variance of MPG can be explained by the linear model.
+```{r}
+summary(stepmodel)
+```
+The variables that were selected for the stepmodel are: cyl, hp, wt, and am.  The stepmodel DF is `r stepmodel$df`.  The adjusted R^2 is `r summary(stepmodel)$r.squared` the residual standard error is `r summary(stepmodel)$sigma`. This is lower than the residual standard error of the base model.  The R^2 value for the stepmodel indicates that the model can explain 86.6% of the variance of MPG.  Thus, the stepmodel resulted in both a lower residual standard error and a higher R^2.  supermodel1 adds a wt-am interaction term. The adjusted R^2 is `r summary(supermodel1)$r.squared` the residual standard error is `r summary(supermodel1)$sigma`. Relative to the stepmodel, supermodel1 has both an improved R^2 and residual standard error.  The model can explain 88.4% of the MPG variance. supermodel2 is conceptual and designed to see if there is interaction between hp and weight.  The adjusted R^2 is `r summary(supermodel2)$r.squared` the residual standard error is `r summary(supermodel2)$sigma`.  Including the nonlinear interaction term improves both R^2 and residual standard error.  This indicates that there might be a nonlinear interaction between horsepower and wt that should be addressed in a future nonlinear model.  The model interpretation is beyond the scope of this course.  
+```{r}
+anova(basemodel,stepmodel,supermodel1)
+```
+The signifficant p-value of the ANOVA analysis for the stepmodel relative to the basemodel (that only has am as a predictor), the model with cyl + hp + wt is signifficant different than the base model.  We conclude that adding cyl + hp + wt to the base model signifficantly improves the model accuracy.  However, the p-value of the ANOVA anlaysis for supermodel1 realative to the stepmodel is not signifficant.   There is not signifficant statistical evidence that the supermodel1 with the wt-am interaction is different than the stepmodel.
+
+The stepmodel residual plots are in Appendix Figure 3.  There are no trends or biases in a plot of residuals vs fitted values, and they appear randomly scattered.  The Normal QQ plot indicates that the residuals are normally distributed.  The Scale-Location plot indicates a random scatering of standarized residuals, indicating a constant variance.  The Residuals vs Leverage plot indicates that there are no outliers beyond the 0.5 bands.  We conclude that the residuals of the stepmodel are normally distributed and homosekedastic.
+
+**Conclusions**
+We conclude:  1.  t.test and linear regression indicate that an a manual transmission is beter for MPG  2.  The selected linear stepmodel(R^2 =0.866), when  hp, cyl, and wt are constant, indicates a manual transmission improves  MPG with an average increase of 1.8 MPG compared to an automatic transmission.  
+
+###Appendix
+
+###Figure 1. Pair plots of the variables in mtcars
+```{r}
+pairs(mpg ~ ., data = mtcars)
+```
+
+\pagebreak
+
+###Figure 2. Boxplot of MPG by transmission type
+```{r}
+boxplot(mpg ~ am, data = mtcars, ylab = "MPG", xlab = "Transmission Type")
+```
+
+\pagebreak
+
+###Figure 3. Residual analysis of the stepmodel
+
+```{r}
+par(mfrow=c(2, 2))
+plot(stepmodel)
+```
