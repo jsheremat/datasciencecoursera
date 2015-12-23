@@ -1,0 +1,25 @@
+
+
+#Fielding
+
+
+#####Player Name
+#####yearID Year 
+#####stint player’s stint (order of appearances within a season) 
+#####teamID Team; a factor lgID League; a factor with levels AA AL FL NL PL UA 
+#####POS Position 
+#####G Games 
+#####GS Games Started 
+#####InnOuts Time played in the field expressed as outs 
+#####PO Putouts 
+#####A Assists 
+#####Fielding 21 
+#####E Errors DP Double Plays
+#####PB Passed Balls (by catchers) 
+#####WP Wild Pitches (by catchers) 
+#####SB Opponent Stolen Bases (by catchers) 
+#####CS Opponents Caught Stealing (by catchers) 
+#####ZR Zone Rating
+
+
+

@@ -1,0 +1,35 @@
+
+
+#Pitching
+
+#####Player Name
+#####yearID Year
+#####stint player’s stint (order of appearances within a season)
+#####teamID Team; a factor
+#####lgID League; a factor with levels AA AL FL NL PL UA
+#####W Wins
+#####L Losses
+#####G Games
+#####GS Games Started
+#####CG Complete Games
+#####SHO Shutouts
+#####SV Saves
+#####IPouts Outs Pitched (innings pitched x 3)
+#####H Hits
+#####ER Earned Runs
+#####HR Homeruns
+#####BB Walks
+#####Pitching 35
+#####SO Strikeouts
+#####BAOpp Opponent’s Batting Average
+#####ERA Earned Run Average
+#####IBB Intentional Walks
+#####WP Wild Pitches
+#####HBP Batters Hit By Pitch
+#####BK Balks
+#####BFP Batters faced by Pitcher
+#####GF Games Finished
+#####R Runs Allowed
+#####SH Sacrifices by opposing batters
+#####SF Sacrifice flies by opposing batters
+#####GIDP Grounded into double plays by opposing batter

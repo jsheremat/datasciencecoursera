@@ -1,0 +1,14 @@
+
+###This app mines the Lahman baseball statistics R package: 
+
+https://cran.r-project.org/web/packages/Lahman/Lahman.pdf
+
+###For each current (2015) team in Major League Baseball, yearly batting, pitching, and fielding statistics are mined and returned in this app.  Statistics are from 1872-2013.  
+
+###This is a link to the app hosed on the Shiny server
+
+https://jsheremat.shinyapps.io/baseball_stats21p3
+
+###This is a link to the Github source files
+
+https://jsheremat.shinyapps.io/baseball_stats21p3
